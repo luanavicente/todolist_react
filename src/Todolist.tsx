@@ -35,7 +35,6 @@ const TodoList: React.FC = () => {
         setTodoList(newTodoList)
     }
 
-    
     function redo(todo: Todo){
         const index = todoList.indexOf(todo)
         const newTodo = {...todo, done: false}
@@ -85,29 +84,33 @@ const TodoList: React.FC = () => {
 
             <div>
                 {
-                    todoList.map(todo => (
-                        <div className="todo" key={todo.id}>
-                            <div>{todo.message}</div>
-                            <div className="actions">
-
-                                {
-                                    todo.done ? (
-                                        <button type="button" className="icon" onClick={() => redo(todo)}>
-                                            <BsArrowCounterclockwise color="#e67e22"/>
-                                        </button>
-                                    ) : (
-                                        <button type="button" className="icon" onClick={() => markDone(todo)}>
-                                            <AiFillCheckCircle color="#27ae60"/>
-                                        </button>
-                                    )
-                                }
-                                
-                                <button type="button" className="icon" onClick={() => deleteTodo(todo)}>
-                                    <AiFillDelete color="e74c3c"/>
-                                </button>
+                    todoList.length === 0 ? (
+                        <h5>Não há tarefas cadastradas.</h5>
+                    ) : (
+                        todoList.map(todo => (
+                            <div className="todo" key={todo.id}>
+                                <div>{todo.message}</div>
+                                <div className="actions">
+    
+                                    {
+                                        todo.done ? (
+                                            <button type="button" className="icon" onClick={() => redo(todo)}>
+                                                <BsArrowCounterclockwise color="#e67e22"/>
+                                            </button>
+                                        ) : (
+                                            <button type="button" className="icon" onClick={() => markDone(todo)}>
+                                                <AiFillCheckCircle color="#27ae60"/>
+                                            </button>
+                                        )
+                                    }
+                                    
+                                    <button type="button" className="icon" onClick={() => deleteTodo(todo)}>
+                                        <AiFillDelete color="e74c3c"/>
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    ))
+                        ))
+                    )
                 }
             </div>
         </div>

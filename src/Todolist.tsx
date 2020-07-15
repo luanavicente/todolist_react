@@ -11,19 +11,6 @@ interface Todo {
 }
 
 const TodoList: React.FC = () => {
-    
-    const mock = [
-        {
-            id: uuid(),
-            message: "Testinho",
-            done: false
-        },
-        {
-            id: uuid(),
-            message: "Testandinho 2",
-            done: true
-        }
-    ]
 
     const [todoList, setTodoList] = useState<Todo[]>([])
     const [todo, setTodo] = useState("")
@@ -35,6 +22,23 @@ const TodoList: React.FC = () => {
             done: false
         }
         setTodoList([newTodo, ...todoList])
+        setTodo("")
+    }
+
+    function markDone(todo: Todo){
+        const index = todoList.indexOf(todo)
+        const countNotDone = todoList.filter(todo => !todo.done).length
+        const newTodo = {...todo, done: true}
+        var newTodoList = todoList.slice();
+        newTodoList.splice(countNotDone, 0, newTodo)
+        newTodoList.splice(index,1)
+        setTodoList(newTodoList)
+    }
+
+    
+    function redo(todo: Todo){
+        console.log(todo)
+        
     }
 
     useEffect(() => {
@@ -77,11 +81,11 @@ const TodoList: React.FC = () => {
 
                                 {
                                     todo.done ? (
-                                        <button type="button" className="icon">
+                                        <button type="button" className="icon" onClick={() => redo(todo)}>
                                             <BsArrowCounterclockwise color="#e67e22"/>
                                         </button>
                                     ) : (
-                                        <button type="button" className="icon">
+                                        <button type="button" className="icon" onClick={() => markDone(todo)}>
                                             <AiFillCheckCircle color="#27ae60"/>
                                         </button>
                                     )

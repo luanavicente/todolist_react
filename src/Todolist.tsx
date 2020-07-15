@@ -37,8 +37,19 @@ const TodoList: React.FC = () => {
 
     
     function redo(todo: Todo){
-        console.log(todo)
-        
+        const index = todoList.indexOf(todo)
+        const newTodo = {...todo, done: false}
+        var newTodoList = todoList.slice();
+        newTodoList.splice(index,1)
+        newTodoList.splice(0, 0, newTodo)
+        setTodoList(newTodoList)
+    }
+
+    function deleteTodo(todo: Todo){
+        const index = todoList.indexOf(todo)
+        var newTodoList = todoList.slice();
+        newTodoList.splice(index,1)
+        setTodoList(newTodoList)
     }
 
     useEffect(() => {
@@ -91,7 +102,7 @@ const TodoList: React.FC = () => {
                                     )
                                 }
                                 
-                                <button type="button" className="icon">
+                                <button type="button" className="icon" onClick={() => deleteTodo(todo)}>
                                     <AiFillDelete color="e74c3c"/>
                                 </button>
                             </div>

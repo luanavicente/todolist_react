@@ -44,27 +44,34 @@ function* getTodoList() {
 function* markAsDone({payload}: AnyAction){        
     const todoList = yield select((state: ApplicationState) => state.todo.todos)
 
-    const doneTodo = {...payload.todo, done: true}
-
-    const match = todoList.find((todo: TodoData) => todo.id === payload.todo.id)
-    const index = todoList.indexOf(match)
-    const countNotDone = todoList.filter((todo: TodoData) => !todo.done).length
-    var newTodoList = todoList.slice();
-    newTodoList.splice(countNotDone, 0, doneTodo)
-    newTodoList.splice(index,1)
-    localStorage.setItem('todoList',JSON.stringify(newTodoList))
+    const newTodoList = todoList.map((todo: TodoData) => {
+        if(todo.id === payload.todo.id){
+            return {...todo,done:true}
+        }
+        return todo
+    })
+    newTodoList.sort((a: TodoData,b: TodoData) => {
+        if (a.done) return 1
+        if (b.done) return -1
+        return 0
+    })
     yield put(setNewTodoList(newTodoList))
 }
 
 function* markRedo({payload}:AnyAction){
     const todoList = yield select((state: ApplicationState) => state.todo.todos)
 
-    const match = todoList.find((todo: TodoData) => todo.id === payload.todo.id)
-    const index = todoList.indexOf(match)
-    const newTodo = {...payload.todo, done: false}
-    var newTodoList = todoList.slice();
-    newTodoList.splice(index,1)
-    newTodoList.splice(0, 0, newTodo)
+    const newTodoList = todoList.map((todo: TodoData) => {
+        if(todo.id === payload.todo.id){
+            return {...todo,done:false}
+        }
+        return todo
+    })
+    newTodoList.sort((a: TodoData,b: TodoData) => {
+        if (a.done) return 1
+        if (b.done) return -1
+        return 0
+    })
     localStorage.setItem('todoList',JSON.stringify(newTodoList))
     yield put(setNewTodoList(newTodoList))
 }

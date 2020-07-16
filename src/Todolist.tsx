@@ -14,16 +14,16 @@ const TodoList: React.FC = () => {
 
     const [newTodoMessage, setnewTodoMessage] = useState("")
 
-    function deleteTodo(todo: TodoData){
-        dispatch(deleteTodoFromList(todo))
+    function deleteTodo(id: string){
+        dispatch(deleteTodoFromList(id))
     }
 
-    function redo(todo: TodoData){
-        dispatch(markToRedo(todo))
+    function redo(id: string){
+        dispatch(markToRedo(id))
     }
 
-    function markDone(todo: TodoData){
-        dispatch(markAsDone(todo))
+    function markDone(id: string){
+        dispatch(markAsDone(id))
     }
 
     function addTodo(message: string){

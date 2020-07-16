@@ -32,7 +32,7 @@ function* getTodoList() {
 
   function* deleteThisTodo({payload}: AnyAction){
         const todoList = yield select((state: ApplicationState) => state.todo.todos)
-        const newTodoList = todoList.filter((todo: TodoData) => todo.id !== payload.todo.id)
+        const newTodoList = todoList.filter((todo: TodoData) => todo.id !== payload.id)
         yield put(setNewTodoList(newTodoList))
   }
 
@@ -45,7 +45,7 @@ function* markAsDone({payload}: AnyAction){
     const todoList = yield select((state: ApplicationState) => state.todo.todos)
 
     const newTodoList = todoList.map((todo: TodoData) => {
-        if(todo.id === payload.todo.id){
+        if(todo.id === payload.id){
             return {...todo,done:true}
         }
         return todo
@@ -62,7 +62,7 @@ function* markRedo({payload}:AnyAction){
     const todoList = yield select((state: ApplicationState) => state.todo.todos)
 
     const newTodoList = todoList.map((todo: TodoData) => {
-        if(todo.id === payload.todo.id){
+        if(todo.id === payload.id){
             return {...todo,done:false}
         }
         return todo

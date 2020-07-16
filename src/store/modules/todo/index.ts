@@ -2,11 +2,7 @@ import { Reducer } from 'redux'
 import { TodoTypes, TodoList } from './types'
 
 const INITIAL_STATE: TodoList = {
-    todos: [{
-        id: 'testeid',
-        message: 'teste msg',
-        done: false
-    }]
+    todos: []
 }
 
 const reducer: Reducer<TodoList> = (state = INITIAL_STATE, action) => {

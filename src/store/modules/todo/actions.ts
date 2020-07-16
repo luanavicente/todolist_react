@@ -1,6 +1,5 @@
 import { action } from 'typesafe-actions'
 import { TodoTypes, TodoData, TodoList } from './types'
-import { act } from 'react-dom/test-utils'
 
 export const getTodoListRequest = () => action(TodoTypes.GET_TODO_LIST_REQUEST)
 export const getTodoListSuccess = (todos: TodoData[]) => action(TodoTypes.GET_TODO_LIST_SUCCESS,{ todos })

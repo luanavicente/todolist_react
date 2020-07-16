@@ -1,67 +1,38 @@
-import React, { useState, useEffect } from 'react';
-import './styles.css'
-import { uuid } from 'uuidv4'
-import { AiFillCheckCircle, AiFillDelete } from 'react-icons/ai'
-import { BsArrowCounterclockwise } from 'react-icons/bs'
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux'
 
-interface Todo {
-    id: string,
-    message: string,
-    done: boolean
-}
+import './styles.css'
+import { ApplicationState } from './store/index'
+import Todo from './components/Todo'
+import { getTodoListRequest, addNewTodo, deleteTodoFromList, markAsDone, markToRedo } from './store/modules/todo/actions'
+import { TodoData } from './store/modules/todo/types';
+
 
 const TodoList: React.FC = () => {
+    const dispatch = useDispatch()
+    const todos = useSelector((state: ApplicationState) => state.todo.todos )
 
-    const [todoList, setTodoList] = useState<Todo[]>([])
-    const [todo, setTodo] = useState("")
+    const [newTodoMessage, setnewTodoMessage] = useState("")
 
-    function addTodo() {
-        const newTodo = {
-            id: uuid(),
-            message: todo,
-            done: false
-        }
-        setTodoList([newTodo, ...todoList])
-        setTodo("")
+    function deleteTodo(todo: TodoData){
+        dispatch(deleteTodoFromList(todo))
     }
 
-    function markDone(todo: Todo){
-        const index = todoList.indexOf(todo)
-        const countNotDone = todoList.filter(todo => !todo.done).length
-        const newTodo = {...todo, done: true}
-        var newTodoList = todoList.slice();
-        newTodoList.splice(countNotDone, 0, newTodo)
-        newTodoList.splice(index,1)
-        setTodoList(newTodoList)
+    function redo(todo: TodoData){
+        dispatch(markToRedo(todo))
     }
 
-    function redo(todo: Todo){
-        const index = todoList.indexOf(todo)
-        const newTodo = {...todo, done: false}
-        var newTodoList = todoList.slice();
-        newTodoList.splice(index,1)
-        newTodoList.splice(0, 0, newTodo)
-        setTodoList(newTodoList)
+    function markDone(todo: TodoData){
+        dispatch(markAsDone(todo))
     }
 
-    function deleteTodo(todo: Todo){
-        const index = todoList.indexOf(todo)
-        var newTodoList = todoList.slice();
-        newTodoList.splice(index,1)
-        setTodoList(newTodoList)
+    function addTodo(message: string){
+        dispatch(addNewTodo(message))
     }
 
     useEffect(() => {
-        const todos = localStorage.getItem('todoList')
-
-        if(todos){
-            setTodoList(JSON.parse(todos))
-        }
-    },[])
-
-    useEffect(() => {
-        localStorage.setItem('todoList',JSON.stringify(todoList))
-    },[todoList])
+        dispatch(getTodoListRequest())
+    }, [])   
 
     return (
         <div id="todoList">
@@ -70,45 +41,26 @@ const TodoList: React.FC = () => {
             <div className="todoInput">
                 <input 
                     type="text" 
-                    value={todo} 
-                    onChange={ e => setTodo(e.target.value) }
+                    value={newTodoMessage} 
+                    onChange={ e => setnewTodoMessage(e.target.value) }
                 />
                 <button 
                     type="button" 
                     className="addTodo" 
-                    onClick={addTodo}
+                    onClick={() => addTodo(newTodoMessage)}
                 >
                     Add
                 </button>
             </div>
 
+
             <div>
                 {
-                    todoList.length === 0 ? (
+                    todos.length === 0 ? (
                         <h5>Não há tarefas cadastradas.</h5>
                     ) : (
-                        todoList.map(todo => (
-                            <div className="todo" key={todo.id}>
-                                <div>{todo.message}</div>
-                                <div className="actions">
-    
-                                    {
-                                        todo.done ? (
-                                            <button type="button" className="icon" onClick={() => redo(todo)}>
-                                                <BsArrowCounterclockwise color="#e67e22"/>
-                                            </button>
-                                        ) : (
-                                            <button type="button" className="icon" onClick={() => markDone(todo)}>
-                                                <AiFillCheckCircle color="#27ae60"/>
-                                            </button>
-                                        )
-                                    }
-                                    
-                                    <button type="button" className="icon" onClick={() => deleteTodo(todo)}>
-                                        <AiFillDelete color="e74c3c"/>
-                                    </button>
-                                </div>
-                            </div>
+                        todos.map(todo => (
+                            <Todo todo={todo} handleDelete={deleteTodo} handleRedo={redo} handleDo={markDone}/>
                         ))
                     )
                 }

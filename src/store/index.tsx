@@ -11,9 +11,11 @@ import {
   import rootReducer from './modules/rootReducer'
   import rootSaga from './modules/rootSaga'
   import { TodoList } from './modules/todo/types'
+  import { UserData } from './modules/user/types'
   
   export interface ApplicationState {
-    todo: TodoList
+    todo: TodoList,
+    user: UserData
   }
 
 declare global {

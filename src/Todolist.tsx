@@ -5,12 +5,12 @@ import './styles.css'
 import { ApplicationState } from './store/index'
 import Todo from './components/Todo'
 import { getTodoListRequest, addNewTodo, deleteTodoFromList, markAsDone, markToRedo } from './store/modules/todo/actions'
-import { TodoData } from './store/modules/todo/types';
 
 
 const TodoList: React.FC = () => {
     const dispatch = useDispatch()
     const todos = useSelector((state: ApplicationState) => state.todo.todos )
+    const user = useSelector((state: ApplicationState) => state.user )
 
     const [newTodoMessage, setnewTodoMessage] = useState("")
 
@@ -37,6 +37,7 @@ const TodoList: React.FC = () => {
     return (
         <div id="todoList">
             <h1>TodoList da felicidade</h1>
+            <h5>Bem-vinde, {user.name}</h5>
 
             <div className="todoInput">
                 <input 
@@ -60,7 +61,9 @@ const TodoList: React.FC = () => {
                         <h5>Não há tarefas cadastradas.</h5>
                     ) : (
                         todos.map(todo => (
-                            <Todo todo={todo} handleDelete={deleteTodo} handleRedo={redo} handleDo={markDone}/>
+                            <div className="todo" key={todo.id}>
+                                <Todo todo={todo} handleDelete={deleteTodo} handleRedo={redo} handleDo={markDone}/>
+                            </div>
                         ))
                     )
                 }

@@ -13,7 +13,7 @@ interface ComponentTodo {
 const Todo: React.FC<ComponentTodo> = ({todo, handleDelete, handleRedo, handleDo}: ComponentTodo) => {
 
   return (
-    <div className="todo" key={todo.id}>
+    <>
         <div>{todo.message}</div>
         <div className="actions">
 
@@ -33,7 +33,7 @@ const Todo: React.FC<ComponentTodo> = ({todo, handleDelete, handleRedo, handleDo
                 <AiFillDelete color="e74c3c"/>
             </button>
         </div>
-    </div>
+    </>
   )
 }
 

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { UserData } from '../../store/modules/user/types'
+import { Container, Label, Button } from './styles'
+import { IoMdLogIn } from 'react-icons/io'
 
 interface ComponentUser {
     user: UserData,
@@ -19,27 +21,27 @@ const Todo: React.FC<ComponentUser> = ({user, save}: ComponentUser) => {
   return (
     <div className="user">
     <div className="userInput">
-        <label htmlFor="input_username">Username</label>
-        <input 
-            id="input_username"
-            type="text" 
-            value={valueUsername} 
-            onChange={ e => setValueUsername(e.target.value) }
-        />
-
-        <br/>
+        <Container>
+            <Label htmlFor="input_username">Username</Label>
+            <input 
+                id="input_username"
+                type="text" 
+                value={valueUsername} 
+                onChange={ e => setValueUsername(e.target.value) }
+            />
+        </Container>
         
-        <label htmlFor="input_name">Name</label>
-        <input 
-            id="input_name"
-            type="text" 
-            value={valueName} 
-            onChange={ e => setValueName(e.target.value) }
-        />
-
-        <br/>
-
-        <button 
+        <Container>
+            <Label htmlFor="input_name">Nome</Label>
+            <input 
+                id="input_name"
+                type="text" 
+                value={valueName} 
+                onChange={ e => setValueName(e.target.value) }
+            />
+        </Container>
+        
+        <Button 
             type="button" 
             className="save" 
             onClick={() => save(
@@ -48,8 +50,9 @@ const Todo: React.FC<ComponentUser> = ({user, save}: ComponentUser) => {
                 username: valueUsername}
             )}
         >
-            Save
-        </button>
+            <IoMdLogIn color="#DADADA"/>
+            Entrar
+        </Button>
     </div>
     </div>
   )

@@ -23,7 +23,7 @@ const Login: React.FC = () => {
 
     return (
         <div id="todoList">
-            <h1>Entre na TodoList da felicidade</h1>
+            <h1>TodoList da felicidade</h1>
             
             <User user={user} save={saveUser}/>
         </div>

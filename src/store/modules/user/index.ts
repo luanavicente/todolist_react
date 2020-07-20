@@ -2,8 +2,8 @@ import { Reducer } from 'redux'
 import { UserTypes, UserData } from './types'
 
 const INITIAL_STATE: UserData = {
-  username: "teste_user",
-  name: "teste_name"
+  username: "",
+  name: ""
 }
 
 const reducer: Reducer<UserData> = (state = INITIAL_STATE, action) => {

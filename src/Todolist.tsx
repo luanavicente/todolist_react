@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 
-import './styles.css'
 import { ApplicationState } from './store/index'
 import Todo from './components/Todo'
 import { getTodoListRequest, addNewTodo, deleteTodoFromList, markAsDone, markToRedo } from './store/modules/todo/actions'
-
+import { TodoInput, ButtonAdd, DivTodo, List } from './styles'
 
 const TodoList: React.FC = () => {
     const dispatch = useDispatch()
@@ -35,24 +34,24 @@ const TodoList: React.FC = () => {
     }, [])   
 
     return (
-        <div id="todoList">
+        <List id="todoList">
             <h1>TodoList da felicidade</h1>
             <h5>Bem-vinde, {user.name}</h5>
 
-            <div className="todoInput">
+            <TodoInput>
                 <input 
                     type="text" 
                     value={newTodoMessage} 
                     onChange={ e => setnewTodoMessage(e.target.value) }
                 />
-                <button 
+                <ButtonAdd 
                     type="button" 
                     className="addTodo" 
                     onClick={() => addTodo(newTodoMessage)}
                 >
                     Add
-                </button>
-            </div>
+                </ButtonAdd>
+            </TodoInput>
 
 
             <div>
@@ -61,14 +60,14 @@ const TodoList: React.FC = () => {
                         <h5>Não há tarefas cadastradas.</h5>
                     ) : (
                         todos.map(todo => (
-                            <div className="todo" key={todo.id}>
+                            <DivTodo className="todo" key={todo.id}>
                                 <Todo todo={todo} handleDelete={deleteTodo} handleRedo={redo} handleDo={markDone}/>
-                            </div>
+                            </DivTodo>
                         ))
                     )
                 }
             </div>
-        </div>
+        </List>
     )
 }
 

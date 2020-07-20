@@ -2,7 +2,6 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from "react-router-dom";
 
-import './styles.css'
 import { ApplicationState } from './store/index'
 import User from './components/User'
 import { UserData } from './store/modules/user/types';

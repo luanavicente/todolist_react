@@ -11,7 +11,7 @@ const reducer: Reducer<UserData> = (state = INITIAL_STATE, action) => {
     case UserTypes.CHANGE_NAME:
       return {...state, name: action.payload.name}
     case UserTypes.CHANGE_USERNAME:
-      return {...state, name: action.payload.username}
+      return {...state, username: action.payload.username}
     default:
       return state
   }

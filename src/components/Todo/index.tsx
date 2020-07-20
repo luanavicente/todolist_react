@@ -2,6 +2,7 @@ import React from 'react'
 import { TodoData } from '../../store/modules/todo/types'
 import { AiFillCheckCircle, AiFillDelete } from 'react-icons/ai'
 import { BsArrowCounterclockwise } from 'react-icons/bs'
+import { ButtonActions } from './styles'
 
 interface ComponentTodo {
     todo: TodoData,
@@ -19,19 +20,19 @@ const Todo: React.FC<ComponentTodo> = ({todo, handleDelete, handleRedo, handleDo
 
             {
                 todo.done ? (
-                    <button type="button" className="icon" onClick={() => handleRedo(todo.id)}>
+                    <ButtonActions type="button" className="icon" onClick={() => handleRedo(todo.id)}>
                         <BsArrowCounterclockwise color="#e67e22"/>
-                    </button>
+                    </ButtonActions>
                 ) : (
-                    <button type="button" className="icon" onClick={() => handleDo(todo.id)}>
+                    <ButtonActions type="button" className="icon" onClick={() => handleDo(todo.id)}>
                         <AiFillCheckCircle color="#27ae60"/>
-                    </button>
+                    </ButtonActions>
                 )
             }
             
-            <button type="button" className="icon" onClick={() => handleDelete(todo.id)}>
+            <ButtonActions type="button" className="icon" onClick={() => handleDelete(todo.id)}>
                 <AiFillDelete color="e74c3c"/>
-            </button>
+            </ButtonActions>
         </div>
     </>
   )

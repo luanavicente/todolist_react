@@ -9,7 +9,7 @@ export const Container = styled.div`
 `
 
 export const Label = styled.label`
-  font-size: 14px;
+  font-size: 13px;
 `
 
 export const Button = styled.button`
@@ -23,4 +23,5 @@ export const Button = styled.button`
   display: flex;
   align-items: center;
   justify-content: space-around;
+  cursor: pointer;
 `

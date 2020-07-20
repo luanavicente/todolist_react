@@ -6,10 +6,12 @@ import './config/ReactotronConfig'
 import { store } from './store'
 import TodoList from './Todolist'
 import Login from './Login'
+import GlobalStyle from './styles'
 
 function App() {
   return (
     <Provider store={store}>
+      <GlobalStyle/>
       <Router>
         <Switch>
           <Route component={TodoList} exact path="/todoList"/>

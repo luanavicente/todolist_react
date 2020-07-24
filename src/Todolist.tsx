@@ -60,7 +60,7 @@ const TodoList: React.FC = () => {
                         <h5>Não há tarefas cadastradas.</h5>
                     ) : (
                         todos.map(todo => (
-                            <DivTodo className="todo" key={todo.id}>
+                            <DivTodo className="todo" key={todo._id}>
                                 <Todo todo={todo} handleDelete={deleteTodo} handleRedo={redo} handleDo={markDone}/>
                             </DivTodo>
                         ))

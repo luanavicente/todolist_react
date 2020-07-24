@@ -1,16 +1,23 @@
-import { all, takeLatest, put, select } from 'redux-saga/effects'
+import { call, all, takeLatest, put, select } from 'redux-saga/effects'
 import { AnyAction } from 'redux'
 import { uuid } from 'uuidv4'
 
 import { ApplicationState } from '../../index'
 import { getTodoListSuccess, getTodoListRequest, setNewTodoList } from './actions'
 import { TodoTypes, TodoData } from './types'
+import api from '../../../services/api'
 
 function* getTodoList() {
-    const todos = localStorage.getItem('todoList')
+    const todos = yield call(api.get, '')
+    const todoList = todos.data ?? []
   
-    if (todos){
-        yield put(getTodoListSuccess(JSON.parse(todos)))
+    if (todoList.length > 0){
+        todoList.sort((a: TodoData,b: TodoData) => {
+            if (a.done) return 1
+            if (b.done) return -1
+            return 0
+        })
+        yield put(getTodoListSuccess(todoList))
     }
     else{
         yield put(getTodoListSuccess([]))
@@ -19,61 +26,64 @@ function* getTodoList() {
 
   function* addNewTodo({payload}: AnyAction){
         const newTodo = {
-            id: uuid(),
-            message: payload.message,
-            done: false
+            message: payload.message
         }
-        const todos = localStorage.getItem('todoList')
-        const todoList = todos ? JSON.parse(todos) : []
+        yield call(api.post, '', newTodo)
+        const todos = yield call(api.get, '')
+        const todoList = todos.data ?? []
 
-        localStorage.setItem('todoList',JSON.stringify([newTodo, ...todoList]))
-        yield put(getTodoListRequest())
+        todoList.sort((a: TodoData,b: TodoData) => {
+            if (a.done) return 1
+            if (b.done) return -1
+            return 0
+        })
+        yield put(setNewTodoList(todoList))
   }
 
-  function* deleteThisTodo({payload}: AnyAction){
-        const todoList = yield select((state: ApplicationState) => state.todo.todos)
-        const newTodoList = todoList.filter((todo: TodoData) => todo.id !== payload.id)
-        yield put(setNewTodoList(newTodoList))
+  function* deleteThisTodo({payload}: AnyAction){        
+        yield call(api.delete, payload.id)
+
+        const todos = yield call(api.get, '')
+        const todoList = todos.data ?? []
+        
+        todoList.sort((a: TodoData,b: TodoData) => {
+            if (a.done) return 1
+            if (b.done) return -1
+            return 0
+        })
+        yield put(setNewTodoList(todoList))
   }
 
   function* setNewList({payload}: AnyAction){
-    localStorage.setItem('todoList',JSON.stringify(payload.list))
-    yield put(getTodoListRequest())
+    yield put(getTodoListSuccess(payload.list))
 }
 
-function* markAsDone({payload}: AnyAction){        
-    const todoList = yield select((state: ApplicationState) => state.todo.todos)
+function* markAsDone({payload}: AnyAction){
+    yield call(api.patch, payload.id, {done: true})
+    
+    const todos = yield call(api.get, '')
+    const todoList = todos.data ?? []
 
-    const newTodoList = todoList.map((todo: TodoData) => {
-        if(todo.id === payload.id){
-            return {...todo,done:true}
-        }
-        return todo
-    })
-    newTodoList.sort((a: TodoData,b: TodoData) => {
+    todoList.sort((a: TodoData,b: TodoData) => {
         if (a.done) return 1
         if (b.done) return -1
         return 0
     })
-    yield put(setNewTodoList(newTodoList))
+    yield put(setNewTodoList(todoList))
 }
 
 function* markRedo({payload}:AnyAction){
-    const todoList = yield select((state: ApplicationState) => state.todo.todos)
+    yield call(api.patch, payload.id, {done: false})
+    
+    const todos = yield call(api.get, '')
+    const todoList = todos.data ?? []
 
-    const newTodoList = todoList.map((todo: TodoData) => {
-        if(todo.id === payload.id){
-            return {...todo,done:false}
-        }
-        return todo
-    })
-    newTodoList.sort((a: TodoData,b: TodoData) => {
+    todoList.sort((a: TodoData,b: TodoData) => {
         if (a.done) return 1
         if (b.done) return -1
         return 0
     })
-    localStorage.setItem('todoList',JSON.stringify(newTodoList))
-    yield put(setNewTodoList(newTodoList))
+    yield put(setNewTodoList(todoList))
 }
   
   export default all([

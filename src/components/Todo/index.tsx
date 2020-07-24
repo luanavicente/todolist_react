@@ -20,17 +20,17 @@ const Todo: React.FC<ComponentTodo> = ({todo, handleDelete, handleRedo, handleDo
 
             {
                 todo.done ? (
-                    <ButtonActions type="button" className="icon" onClick={() => handleRedo(todo.id)}>
+                    <ButtonActions type="button" className="icon" onClick={() => handleRedo(todo._id)}>
                         <BsArrowCounterclockwise color="#e67e22"/>
                     </ButtonActions>
                 ) : (
-                    <ButtonActions type="button" className="icon" onClick={() => handleDo(todo.id)}>
+                    <ButtonActions type="button" className="icon" onClick={() => handleDo(todo._id)}>
                         <AiFillCheckCircle color="#27ae60"/>
                     </ButtonActions>
                 )
             }
             
-            <ButtonActions type="button" className="icon" onClick={() => handleDelete(todo.id)}>
+            <ButtonActions type="button" className="icon" onClick={() => handleDelete(todo._id)}>
                 <AiFillDelete color="e74c3c"/>
             </ButtonActions>
         </div>
